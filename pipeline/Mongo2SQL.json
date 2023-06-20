@@ -32,24 +32,6 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['borough']"
-								},
-								"sink": {
-									"name": "borough",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['cuisine']"
-								},
-								"sink": {
-									"name": "cuisine",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"path": "$['name']"
 								},
 								"sink": {
