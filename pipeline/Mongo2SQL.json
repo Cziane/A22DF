@@ -60,7 +60,8 @@
 									"path": "$['restaurant_id']"
 								},
 								"sink": {
-									"name": "id"
+									"name": "restaurant_id",
+									"type": "Int32"
 								}
 							}
 						],
