@@ -1,0 +1,34 @@
+{
+	"name": "AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PeopleDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "restaurant_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "borough",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cuisine",
+				"type": "nvarchar"
+			},
+			{
+				"name": "name",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Restaurant"
+		}
+	}
+}

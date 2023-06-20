@@ -1,0 +1,51 @@
+{
+	"name": "AzureSqlTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PeopleDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "building",
+				"type": "nvarchar"
+			},
+			{
+				"name": "street",
+				"type": "nvarchar"
+			},
+			{
+				"name": "zip",
+				"type": "nvarchar"
+			},
+			{
+				"name": "lat",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "long",
+				"type": "decimal",
+				"precision": 9,
+				"scale": 6
+			},
+			{
+				"name": "restaurant_id",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Address"
+		}
+	}
+}

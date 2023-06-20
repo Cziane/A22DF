@@ -1,0 +1,267 @@
+{
+	"name": "Mongo2SQL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Restaurant",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['borough']"
+								},
+								"sink": {
+									"name": "borough",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['cuisine']"
+								},
+								"sink": {
+									"name": "cuisine",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['restaurant_id']"
+								},
+								"sink": {
+									"name": "restaurant_id",
+									"type": "Int32"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosDbMongoDbCollection1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy Address",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy Restaurant",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['address']['building']"
+								},
+								"sink": {
+									"name": "building",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['street']"
+								},
+								"sink": {
+									"name": "street",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['zipcode']"
+								},
+								"sink": {
+									"name": "zip",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['$[\\'address\\'][\\'coord\\'][1]']"
+								},
+								"sink": {
+									"name": "long",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['coord'][0]"
+								},
+								"sink": {
+									"name": "lat",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['restaurant_id']"
+								},
+								"sink": {
+									"name": "restaurant_id",
+									"type": "Int32"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosDbMongoDbCollection1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "GradeToJson",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['restaurant_id']"
+								},
+								"sink": {
+									"path": "$['restaurant_id']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['grades'][0]['date']['$date']"
+								},
+								"sink": {
+									"path": "$['grades']['date']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['grades'][0]['grade']"
+								},
+								"sink": {
+									"path": "$['grades']['grade']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['grades'][0]['score']"
+								},
+								"sink": {
+									"path": "$['grades']['score']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosDbMongoDbCollection1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
