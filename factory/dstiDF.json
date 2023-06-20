@@ -1,0 +1,9 @@
+{
+	"name": "dstiDF",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "83a49a26-c012-49e3-bf69-c78ec25995f5",
+		"tenantId": "e5d15069-41a2-48be-a3f3-d7f52db16425"
+	}
+}
