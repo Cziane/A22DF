@@ -1,0 +1,36 @@
+{
+	"name": "PeopleCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CzianeSA",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "People.csv",
+				"container": "datasource"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Firstname",
+				"type": "String"
+			},
+			{
+				"name": "Lastname",
+				"type": "String"
+			},
+			{
+				"name": "Emaim",
+				"type": "String"
+			}
+		]
+	}
+}
