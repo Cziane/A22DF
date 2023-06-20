@@ -3,11 +3,70 @@
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
-			"sources": [],
-			"sinks": [],
-			"transformations": [],
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json2",
+						"type": "DatasetReference"
+					},
+					"name": "TempJson"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable3",
+						"type": "DatasetReference"
+					},
+					"name": "tosql"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Unwind"
+				}
+			],
 			"scriptLines": [
-				""
+				"source(output(",
+				"          grades as (date as ({$date} as long), grade as string, score as short)[],",
+				"          restaurant_id as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> TempJson",
+				"TempJson foldDown(unroll(grades),",
+				"     mapColumn(",
+				"          grade = grades.grade,",
+				"          restaurant_id,",
+				"          score = grades.score,",
+				"          date = grades.date.{$date}",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> Unwind",
+				"Unwind sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          grade as string,",
+				"          score as integer,",
+				"          created_at as timestamp,",
+				"          restaurant_id as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          grade,",
+				"          score,",
+				"          created_at = date,",
+				"          restaurant_id",
+				"     )) ~> tosql"
 			]
 		}
 	}
