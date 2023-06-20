@@ -194,7 +194,6 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "CosmosDbMongoDbApiSource",
@@ -223,26 +222,10 @@
 							},
 							{
 								"source": {
-									"path": "$['grades'][0]['date']['$date']"
+									"path": "$['grades']"
 								},
 								"sink": {
-									"path": "$['grades']['date']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['grades'][0]['grade']"
-								},
-								"sink": {
-									"path": "$['grades']['grade']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['grades'][0]['score']"
-								},
-								"sink": {
-									"path": "$['grades']['score']"
+									"path": "$['grades']"
 								}
 							}
 						]
